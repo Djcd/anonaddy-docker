@@ -8,36 +8,38 @@ if [ "$RSPAMD_ENABLE" != "true" ]; then
   echo "INFO: Rspamd service disabled."
   exit 0
 fi
-if [ ! -f "$DKIM_PRIVATE_KEY" ]; then
-  echo "WRN: $DKIM_PRIVATE_KEY not found. Rspamd service disabled."
-  exit 0
-fi
 
-echo "Copying DKIM private key for Rspamd"
-mkdir -p /var/lib/rspamd/dkim
-cp -f "${DKIM_PRIVATE_KEY}" "/var/lib/rspamd/dkim/${ANONADDY_DOMAIN}.default.key"
 
-echo "Setting Rspamd dkim_signing.conf"
-cat >/etc/rspamd/local.d/dkim_signing.conf <<EOL
-signing_table = [
-"*@${ANONADDY_DOMAIN} ${ANONADDY_DOMAIN}",
-"*@*.${ANONADDY_DOMAIN} ${ANONADDY_DOMAIN}",
-];
+if [ "$ANONADDY_DKIM_ENABLE" = "true" ] && [ -f "$DKIM_PRIVATE_KEY" ]; then
+  echo "INFO: Rspamd DKIM enabled"
 
-key_table = [
-"${ANONADDY_DOMAIN} ${ANONADDY_DOMAIN}:default:/var/lib/rspamd/dkim/${ANONADDY_DOMAIN}.default.key",
-];
+  echo "Copying DKIM private key for Rspamd"
+  mkdir -p /var/lib/rspamd/dkim
+  cp -f "${DKIM_PRIVATE_KEY}" "/var/lib/rspamd/dkim/${ANONADDY_DOMAIN}.${ANONADDY_DKIM_SELECTOR}.key"
 
-use_domain = "envelope";
-allow_hdrfrom_mismatch = true;
-allow_hdrfrom_mismatch_sign_networks = true;
-allow_username_mismatch = true;
-use_esld = true;
-sign_authenticated = false;
+  echo "Setting Rspamd dkim_signing.conf"
+  cat >/etc/rspamd/local.d/dkim_signing.conf <<EOL
+  signing_table = [
+  "* ${ANONADDY_DOMAIN}",
+  ];
+
+  key_table = [
+  "${ANONADDY_DOMAIN} ${ANONADDY_DOMAIN}:${ANONADDY_DKIM_SELECTOR}:/var/lib/rspamd/dkim/${ANONADDY_DOMAIN}.${ANONADDY_DKIM_SELECTOR}.key",
+  ];
+
+  use_domain = "envelope";
+  allow_hdrfrom_mismatch = true;
+  allow_hdrfrom_mismatch_sign_networks = true;
+  allow_username_mismatch = true;
+  use_esld = true;
+  sign_authenticated = false;
 EOL
 
-echo "Setting Rspamd arc.conf"
-cp /etc/rspamd/local.d/dkim_signing.conf /etc/rspamd/local.d/arc.conf
+  echo "Setting Rspamd arc.conf"
+  cp /etc/rspamd/local.d/dkim_signing.conf /etc/rspamd/local.d/arc.conf
+fi
+
+
 
 echo "Setting Rspamd classifier-bayes.conf"
 cat >/etc/rspamd/local.d/classifier-bayes.conf <<EOL
