@@ -24,7 +24,7 @@ if [ "$ANONADDY_DKIM_ENABLE" = "true" ] && [ -f "$DKIM_PRIVATE_KEY" ]; then
   ];
 
   key_table = [
-  "${ANONADDY_DOMAIN} ${ANONADDY_DOMAIN}:${ANONADDY_DKIM_SELECTOR}:/var/lib/rspamd/dkim/${ANONADDY_DOMAIN}.${ANONADDY_DKIM_SELECTOR}.key",
+  "${ANONADDY_DOMAIN} %:${ANONADDY_DKIM_SELECTOR}:/var/lib/rspamd/dkim/${ANONADDY_DOMAIN}.${ANONADDY_DKIM_SELECTOR}.key",
   ];
 
   use_domain = "envelope";
