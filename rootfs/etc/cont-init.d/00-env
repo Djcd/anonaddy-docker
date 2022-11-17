@@ -91,7 +91,7 @@ POSTFIX_RELAYHOST_AUTH_ENABLE=${POSTFIX_RELAYHOST_AUTH_ENABLE:-false}
 RSPAMD_ENABLE=${RSPAMD_ENABLE:-false}
 #RSPAMD_WEB_PASSWORD=${RSPAMD_WEB_PASSWORD:-null}
 
-DKIM_PRIVATE_KEY=/data/dkim/${ANONADDY_DOMAIN}.${ANONADDY_DKIM_SELECTOR}.private
+DKIM_PRIVATE_KEY=/data/dkim/dkim.${ANONADDY_DKIM_SELECTOR}.private
 
 SMTPD_MILTERS=""
 if [ "$RSPAMD_ENABLE" = "true" ] && [ -f "$DKIM_PRIVATE_KEY" ]; then
@@ -99,7 +99,7 @@ if [ "$RSPAMD_ENABLE" = "true" ] && [ -f "$DKIM_PRIVATE_KEY" ]; then
 fi
 
 if [ "$ANONADDY_DKIM_ENABLE" = "true" ]; then
-  ANONADDY_DKIM_SIGNING_KEY=/data/dkim/${ANONADDY_DOMAIN}.${ANONADDY_DKIM_SELECTOR}.private
+  ANONADDY_DKIM_SIGNING_KEY=/data/dkim/dkim.${ANONADDY_DKIM_SELECTOR}.private
 fi
 
 # Keep them to check if users are still using an old configuration
