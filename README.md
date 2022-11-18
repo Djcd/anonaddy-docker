@@ -125,7 +125,7 @@ Image: anonaddy/anonaddy:latest
 * `ANONADDY_NEW_ALIAS_LIMIT`: Number of new aliases a user can create each hour (default `10`)
 * `ANONADDY_ADDITIONAL_USERNAME_LIMIT`: Number of additional usernames a user can add to their account (default `10`)
 * `ANONADDY_SIGNING_KEY_FINGERPRINT`: GPG key used to sign forwarded emails. Should be the same as your mail from email address
-* `ANONADDY_DKIM_ENABLE`: Enable DKIM, generates a key with `$ANONADDY_DKIM_SELECTOR`. Public key should be used with `$ANONADDY_DOMAIN` as dns txt entry. Additional and custom domains will also be signed with the key. (default `false`)
+* `ANONADDY_DKIM_ENABLE`: Enable DKIM, generates a key with `$ANONADDY_DKIM_SELECTOR`. Public key should be used with `$ANONADDY_DOMAIN` as dns txt entry. Domains in `$ANONADDY_ALL_DOMAINS` and custom user domains will also be signed with the key. (default `false`)
 * `ANONADDY_DKIM_SELECTOR`: Selector for the current DKIM signing key (default `default`)
 
 > **Note**
