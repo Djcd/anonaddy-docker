@@ -1,7 +1,7 @@
 name: build
 
 concurrency:
-  group: build-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 on:
@@ -13,8 +13,6 @@ on:
     paths-ignore:
       - '**.md'
   pull_request:
-    branches:
-      - 'master'
     paths-ignore:
       - '**.md'
 
@@ -58,7 +56,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       -
         name: Build
-        uses: docker/bake-action@v2
+        uses: docker/bake-action@v3
         with:
           files: |
             ./docker-bake.hcl
