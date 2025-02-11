@@ -97,7 +97,7 @@ DKIM_PRIVATE_KEY=/data/dkim/dkim.${ANONADDY_DKIM_SELECTOR}.private
 
 SMTPD_MILTERS=""
 if [ "$RSPAMD_ENABLE" = "true" ] && [ -f "$DKIM_PRIVATE_KEY" ]; then
-  SMTPD_MILTERS="inet:127.0.0.1:11332"
+  SMTPD_MILTERS=${RSPAMD_SMTPD_MILTERS:-inet:127.0.0.1:11332}
 fi
 
 if [ "$ANONADDY_DKIM_ENABLE" = "true" ]; then
